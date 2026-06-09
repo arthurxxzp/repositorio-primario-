@@ -1,0 +1,110 @@
+
+
+saldo = 1000.00
+senha_correta = "1234"
+extrato = []
+
+# Login
+tentativas = 3
+
+while tentativas > 0:
+    senha = input("Digite sua senha: ")
+
+    if senha == senha_correta:
+        print("\nLogin realizado com sucesso!")
+        break
+    else:
+        tentativas -= 1
+        print(f"Senha incorreta. Tentativas restantes: {tentativas}")
+
+if tentativas == 0:
+    print("Conta bloqueada.")
+    exit()
+
+# Menu principal
+while True:
+    print("\n" + "=" * 40)
+    print("       CAIXA ELETRÔNICO")
+    print("=" * 40)
+    print("1 - Consultar saldo")
+    print("2 - Depositar")
+    print("3 - Sacar")
+    print("4 - Transferir")
+    print("5 - Ver extrato")
+    print("6 - Sair")
+
+    opcao = input("\nEscolha uma opção: ")
+
+    # Consultar saldo
+    if opcao == "1":
+        print(f"\nSaldo atual: R$ {saldo:.2f}")
+
+    # Depositar
+    elif opcao == "2":
+        try:
+            valor = float(input("Digite o valor do depósito: R$ "))
+
+            if valor > 0:
+                saldo += valor
+                extrato.append(f"Depósito: +R$ {valor:.2f}")
+                print("Depósito realizado com sucesso!")
+            else:
+                print("Valor inválido.")
+        except ValueError:
+            print("Digite um valor numérico válido.")
+
+    # Sacar
+    elif opcao == "3":
+        try:
+            valor = float(input("Digite o valor do saque: R$ "))
+
+            if valor <= 0:
+                print("Valor inválido.")
+            elif valor > saldo:
+                print("Saldo insuficiente.")
+            else:
+                saldo -= valor
+                extrato.append(f"Saque: -R$ {valor:.2f}")
+                print("Saque realizado com sucesso!")
+        except ValueError:
+            print("Digite um valor numérico válido.")
+
+    # Transferir
+    elif opcao == "4":
+        conta_destino = input("Conta de destino: ")
+
+        try:
+            valor = float(input("Valor da transferência: R$ "))
+
+            if valor <= 0:
+                print("Valor inválido.")
+            elif valor > saldo:
+                print("Saldo insuficiente.")
+            else:
+                saldo -= valor
+                extrato.append(
+                    f"Transferência para {conta_destino}: -R$ {valor:.2f}"
+                )
+                print("Transferência realizada com sucesso!")
+        except ValueError:
+            print("Digite um valor numérico válido.")
+
+    # Extrato
+    elif opcao == "5":
+        print("\n===== EXTRATO =====")
+
+        if not extrato:
+            print("Nenhuma movimentação realizada.")
+        else:
+            for movimentacao in extrato:
+                print(movimentacao)
+
+        print(f"\nSaldo atual: R$ {saldo:.2f}")
+
+    # Sair
+    elif opcao == "6":
+        print("\nObrigado por utilizar nosso caixa eletrônico!")
+        break
+
+    else:
+        print("Opção inválida. Tente novamente.")
